@@ -41,6 +41,9 @@ public:
     UPROPERTY(EditAnywhere)
     USceneComponent* OurVisibleComponent;
     
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "HUD")
+    USceneComponent* CursorMesh = nullptr;
+    
     UPROPERTY(EditAnywhere)
     int Speed = 100;
 

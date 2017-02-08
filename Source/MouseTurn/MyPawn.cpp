@@ -30,7 +30,7 @@ void AMyPawn::BeginPlay()
     Super::BeginPlay();
 
     //Vis muscursor:
-    //GetWorld()->GetFirstPlayerController()->bShowMouseCursor = true;
+    GetWorld()->GetFirstPlayerController()->bShowMouseCursor = true;
     
     ///Setter opp kollisjonstesting
     CollisionBox = this->FindComponentByClass<UBoxComponent>();
@@ -71,6 +71,27 @@ void AMyPawn::Tick( float DeltaTime )
     {
         FVector NewLocation = GetActorLocation() + GetActorForwardVector()*(Speed * DeltaTime);
         SetActorLocation(NewLocation);
+    }
+    
+    FHitResult Hit;
+    bool HitResult = false;
+    
+    HitResult = GetWorld()->GetFirstPlayerController()->GetHitResultUnderCursorByChannel(UEngineTypes::ConvertToTraceType(ECC_WorldStatic), true, Hit);
+    
+    if (HitResult)
+    {
+        FVector CursorLocation = Hit.Location;
+        UE_LOG(LogTemp, Warning, TEXT("Cursor location %s!"), *CursorLocation.ToString());
+        FVector TempLocation = FVector(CursorLocation.X, CursorLocation.Y,  30.f);
+        if (CursorMesh)
+            CursorMesh->SetWorldLocation(TempLocation);
+        else
+            UE_LOG(LogTemp, Warning, TEXT("Cursor Mesh not found"));
+        
+        FVector NewDirection =  TempLocation - GetActorLocation();
+        NewDirection.Z = 0.f;
+        NewDirection.Normalize();
+        SetActorRotation(NewDirection.Rotation());
     }
     
     //Roterer nå via blueprint. Dette virker, men ikke slik som blueprint-versjonen

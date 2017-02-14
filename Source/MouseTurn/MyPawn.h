@@ -41,11 +41,11 @@ public:
     UPROPERTY(EditAnywhere)
     USceneComponent* OurVisibleComponent;
     
-    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "HUD")
-    USceneComponent* CursorMesh = nullptr;
+//    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "HUD")
+//    USceneComponent* CursorMesh = nullptr;
     
     UPROPERTY(EditAnywhere)
-    int Speed = 100;
+    int Speed = 400;
 
     UPROPERTY(EditAnywhere)
     float ShootSpeed = 0.3f;
@@ -73,6 +73,10 @@ public:
 
     UPROPERTY(EditAnywhere)
     int AmmoInClip = 20;
+    
+    /** A decal that projects to the cursor location. */
+    UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
+    class UDecalComponent* CursorToWorld;
     
     
     

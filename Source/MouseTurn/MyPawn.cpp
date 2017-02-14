@@ -22,6 +22,17 @@ AMyPawn::AMyPawn()
 
     OurVisibleComponent = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("OurVisibleComponent"));
     OurVisibleComponent->SetupAttachment(RootComponent);
+    
+    // Create a decal in the world to show the cursor's location
+    CursorToWorld = CreateDefaultSubobject<UDecalComponent>("CursorToWorld");
+    CursorToWorld->SetupAttachment(RootComponent);
+    static ConstructorHelpers::FObjectFinder<UMaterial> DecalMaterialAsset(TEXT("Material'/Game/Materials/M_Cursor_Decal.M_Cursor_Decal'"));
+    if (DecalMaterialAsset.Succeeded())
+    {
+        CursorToWorld->SetDecalMaterial(DecalMaterialAsset.Object);
+    }
+    CursorToWorld->DecalSize = FVector(16.0f, 32.0f, 32.0f);
+    CursorToWorld->SetRelativeRotation(FRotator(90.0f, 0.0f, 0.0f).Quaternion());
 }
 
 // Called when the game starts or when spawned
@@ -80,13 +91,19 @@ void AMyPawn::Tick( float DeltaTime )
     
     if (HitResult)
     {
+        FVector CursorFV = Hit.ImpactNormal;
+        FRotator CursorR = CursorFV.Rotation();
+        CursorToWorld->SetWorldLocation(Hit.Location);
+        CursorToWorld->SetWorldRotation(CursorR);
+
+        
         FVector CursorLocation = Hit.Location;
         UE_LOG(LogTemp, Warning, TEXT("Cursor location %s!"), *CursorLocation.ToString());
         FVector TempLocation = FVector(CursorLocation.X, CursorLocation.Y,  30.f);
-        if (CursorMesh)
-            CursorMesh->SetWorldLocation(TempLocation);
-        else
-            UE_LOG(LogTemp, Warning, TEXT("Cursor Mesh not found"));
+//        if (CursorMesh)
+//            CursorMesh->SetWorldLocation(TempLocation);
+//        else
+//            UE_LOG(LogTemp, Warning, TEXT("Cursor Mesh not found"));
         
         FVector NewDirection =  TempLocation - GetActorLocation();
         NewDirection.Z = 0.f;

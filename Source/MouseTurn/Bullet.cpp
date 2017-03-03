@@ -48,12 +48,6 @@ void ABullet::OnOverlap(UPrimitiveComponent* OverlappedComponent, AActor *OtherA
     if(OtherActor->IsA(AEnemy::StaticClass()))
     {
         Cast<AEnemy>(OtherActor)->ImHit(); //Alternativt bare OtherActor->Destroy();
-        //PartikkelFX:
-        //UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), ExplotionFX, GetTransform(), true);
-        
-        //SoundFX
-        //UGameplayStatics::PlaySound2D(GetWorld(), ExplotionSound, 1.f, 1.f, 0.f);
-        //UGameplayStatics::PlaySoundAtLocation(GetWorld(), ExplotionSound, GetActorLocation());
         
         //Destroy Bullet:
         Destroy();

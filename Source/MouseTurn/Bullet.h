@@ -20,22 +20,20 @@ public:
 	// Called every frame
 	virtual void Tick( float DeltaSeconds ) override;
 private:
+    /**Speed of bullet*/
     UPROPERTY(EditAnywhere)
     float Speed = 400.f;
     
+    /**Time before bullet selfdestruct*/
     UPROPERTY(EditAnywhere)
     float TimeBeforeDestroy = 5.f;
     
     float TimeLived{0};
     
+    /**The collision shape of the bullet*/
     UPROPERTY(EditAnywhere)
     UShapeComponent* RootSphere = nullptr;
-    
-//    UPROPERTY(EditAnywhere)
-//    UParticleSystem *ExplotionFX = nullptr;
-//    
-//    UPROPERTY(EditAnywhere)
-//    USoundBase* ExplotionSound;
+
     
     UFUNCTION()
     void OnOverlap(UPrimitiveComponent* OverlappedComponent, AActor *OtherActor,

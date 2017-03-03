@@ -40,10 +40,10 @@ void AMyPawn::BeginPlay()
 {
     Super::BeginPlay();
 
-    //Vis muscursor:
+    //Show system cursor. Should probably be false
     GetWorld()->GetFirstPlayerController()->bShowMouseCursor = true;
     
-    ///Setter opp kollisjonstesting
+    //Set up collision shape
     CollisionBox = this->FindComponentByClass<UBoxComponent>();
     //CollisionBox->bGenerateOverlapEvents = true;
     
@@ -84,6 +84,8 @@ void AMyPawn::Tick( float DeltaTime )
         SetActorLocation(NewLocation);
     }
     
+    
+    /// Move the cursor
     FHitResult Hit;
     bool HitResult = false;
     
@@ -96,14 +98,10 @@ void AMyPawn::Tick( float DeltaTime )
         CursorToWorld->SetWorldLocation(Hit.Location);
         CursorToWorld->SetWorldRotation(CursorR);
 
-        
+        ///Set the new direction of the pawn:
         FVector CursorLocation = Hit.Location;
-        UE_LOG(LogTemp, Warning, TEXT("Cursor location %s!"), *CursorLocation.ToString());
+        UE_LOG(LogTemp, Warning, TEXT("Hit location %s!"), *Hit.Location.ToString());
         FVector TempLocation = FVector(CursorLocation.X, CursorLocation.Y,  30.f);
-//        if (CursorMesh)
-//            CursorMesh->SetWorldLocation(TempLocation);
-//        else
-//            UE_LOG(LogTemp, Warning, TEXT("Cursor Mesh not found"));
         
         FVector NewDirection =  TempLocation - GetActorLocation();
         NewDirection.Z = 0.f;
@@ -111,28 +109,7 @@ void AMyPawn::Tick( float DeltaTime )
         SetActorRotation(NewDirection.Rotation());
     }
     
-    //Roterer nå via blueprint. Dette virker, men ikke slik som blueprint-versjonen
-    //RotateWithMouse();
-    
 }
-
-//void AMyPawn::RotateWithMouse()
-//{
-//    if (Controller != NULL)
-//    {
-//        FVector mouseLocation, mouseDirection;
-//        APlayerController* playerController = GetWorld()->GetFirstPlayerController();
-//        playerController->DeprojectMousePositionToWorld(mouseLocation, mouseDirection);
-//        
-//        //UE_LOG(LogTemp, Warning, TEXT("Mouse Location %s Direction %s"), *mouseLocation.ToString(), *mouseDirection.ToString());
-//        
-//        FRotator currentCharacterRotation = GetActorRotation();
-//        FRotator targetRotation = mouseDirection.Rotation();
-//        
-//        FRotator newRotation = FRotator(currentCharacterRotation.Pitch, targetRotation.Yaw * YawSpeed, currentCharacterRotation.Roll);
-//        SetActorRotation(newRotation);
-//    }
-//}
 
 // Called to bind functionality to input
 void AMyPawn::SetupPlayerInputComponent(class UInputComponent* InputComponent)

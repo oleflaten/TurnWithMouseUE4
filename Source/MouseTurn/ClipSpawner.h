@@ -20,15 +20,19 @@ public:
 	// Called every frame
 	virtual void Tick( float DeltaSeconds ) override;
     
+    /**What the spawner should spawn*/
     UPROPERTY(EditAnywhere, Category = "Spawning")
     TSubclassOf<class AClip> ClipBlueprint;
     
+    /**The maximum time before a clip is spawned*/
     UPROPERTY(EditAnywhere, Category = "Spawning")
     float MaxSpawnDelay = 10.f;
     
+    /**The minimum time before a clip is spawned*/
     UPROPERTY(EditAnywhere, Category = "Spawning")
     float MinSpawnDelay = 5.f;
     
+    //How long to next spawn
     float CurrentSpawnDelay = 0.f;
 
 	

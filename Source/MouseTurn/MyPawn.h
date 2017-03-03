@@ -23,8 +23,6 @@ public:
     // Called to bind functionality to input
     virtual void SetupPlayerInputComponent(class UInputComponent* InputComponent) override;
     
-    //void RotateWithMouse();
-    
     //Input functions
     void Move_XAxis(float AxisValue);
     void Move_YAxis(float AxisValue);
@@ -34,49 +32,57 @@ public:
     void Restart();
     bool DoTrace(FHitResult* RV_Hit, FCollisionQueryParams* RV_TraceParams);
     
-    //Input variables
-    FVector CurrentVelocity;
-    bool IsShooting;
+    /**How much ammo does the pawn have now*/
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Pawn Setup")
+    int Ammo = 20;
     
-    UPROPERTY(EditAnywhere)
+    /**How many enemies have the pawn shot*/
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Pawn Setup")
+    int EnemiesShot = 0;
+    
+private:
+    UPROPERTY(EditAnywhere, Category = "Pawn Setup")
     USceneComponent* OurVisibleComponent;
     
-//    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "HUD")
-//    USceneComponent* CursorMesh = nullptr;
-    
-    UPROPERTY(EditAnywhere)
+    /**The max movement speed of the pawn*/
+    UPROPERTY(EditAnywhere, Category = "Pawn Setup")
     int Speed = 400;
 
-    UPROPERTY(EditAnywhere)
+    /**How fast is the autoshoot?*/
+    UPROPERTY(EditAnywhere, Category = "Pawn Setup")
     float ShootSpeed = 0.3f;
     
-    UPROPERTY(EditAnywhere)
+    /**The speed of pawn rotation*/
+    UPROPERTY(EditAnywhere, Category = "Pawn Setup")
     float YawSpeed = 0.3f;
     
-    UPROPERTY(EditAnywhere, Category="Spawning")
+    /**The bullet the pawn shoots*/
+    UPROPERTY(EditAnywhere, Category = "Pawn Setup")
     TSubclassOf<class ABullet> BulletBlueprint;
+    
+    /**How much ammo does the pawn get from clips*/
+    UPROPERTY(EditAnywhere, Category = "Pawn Setup")
+    int AmmoInClip = 20;
+    
+    /** A decal that projects to the cursor location. */
+    UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Pawn Setup", meta = (AllowPrivateAccess = "true"))
+    class UDecalComponent* CursorToWorld;
     
     UFUNCTION()
     void OnOverlap(UPrimitiveComponent* OverlappedComponent, AActor *OtherActor, UPrimitiveComponent *OtherComponent, int32 OtherBodyIndex, bool bFromSweep, const FHitResult &SweepResult);
  
+    /**Holds whether the pawn is dead or not*/
     bool Died = false;
-    
+    /** The velocity of the pawn*/
+    FVector CurrentVelocity;
+    /**Is the pawn shooting*/
+    bool IsShooting;
+    /**Collision shape*/
     UShapeComponent* CollisionBox = nullptr;
-        
+    /** How long time to next shot*/
     float NextShot = -0.1f;
  
-    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "HUD")
-    int Ammo = 20;
-    
-    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "HUD")
-    int EnemiesShot = 0;
 
-    UPROPERTY(EditAnywhere)
-    int AmmoInClip = 20;
-    
-    /** A decal that projects to the cursor location. */
-    UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
-    class UDecalComponent* CursorToWorld;
     
     
     

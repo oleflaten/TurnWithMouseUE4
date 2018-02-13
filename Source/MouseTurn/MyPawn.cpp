@@ -1,11 +1,18 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
-#include "MouseTurn.h"
 #include "MyPawn.h"
+#include "MouseTurn.h"
 #include "Bullet.h"
 #include "Enemy.h"
 #include "Clip.h"
 
+#include "Components/BoxComponent.h"
+#include "Components/StaticMeshComponent.h"
+#include "Components/Decalcomponent.h"
+#include "Materials/Material.h"
+#include "Engine/World.h"
+#include "UObject/ConstructorHelpers.h"
+#include "Kismet/GameplayStatics.h"
 
 // Sets default values
 AMyPawn::AMyPawn()

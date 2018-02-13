@@ -5,6 +5,11 @@
 #include "GameFramework/Pawn.h"
 #include "MyPawn.generated.h"
 
+class UDecalComponent;
+class UShapeComponent;
+class USceneComponent;
+class ABullet;
+
 UCLASS()
 class MOUSETURN_API AMyPawn : public APawn
 {
@@ -58,7 +63,7 @@ private:
     
     /**The bullet the pawn shoots*/
     UPROPERTY(EditAnywhere, Category = "Pawn Setup")
-    TSubclassOf<class ABullet> BulletBlueprint;
+    TSubclassOf<ABullet> BulletBlueprint;
     
     /**How much ammo does the pawn get from clips*/
     UPROPERTY(EditAnywhere, Category = "Pawn Setup")
@@ -66,7 +71,7 @@ private:
     
     /** A decal that projects to the cursor location. */
     UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Pawn Setup", meta = (AllowPrivateAccess = "true"))
-    class UDecalComponent* CursorToWorld;
+    UDecalComponent* CursorToWorld;
     
     UFUNCTION()
     void OnOverlap(UPrimitiveComponent* OverlappedComponent, AActor *OtherActor, UPrimitiveComponent *OtherComponent, int32 OtherBodyIndex, bool bFromSweep, const FHitResult &SweepResult);

@@ -5,6 +5,8 @@
 #include "GameFramework/Actor.h"
 #include "Clip.generated.h"
 
+class USphereComponent;
+
 UCLASS()
 class MOUSETURN_API AClip : public AActor
 {

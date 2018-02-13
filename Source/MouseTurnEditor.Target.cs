@@ -9,5 +9,8 @@ public class MouseTurnEditorTarget : TargetRules
 	{
 		Type = TargetType.Editor;
 		ExtraModuleNames.Add("MouseTurn");
+
+        bUseUnityBuild = false;
+        bUsePCHFiles = false;
 	}
 }

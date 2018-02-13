@@ -5,6 +5,8 @@
 #include "GameFramework/Actor.h"
 #include "EnemySpawner.generated.h"
 
+class AEnemy;
+
 UCLASS()
 class MOUSETURN_API AEnemySpawner : public AActor
 {
@@ -22,7 +24,7 @@ public:
 
     /**What enemy should be spawned*/
     UPROPERTY(EditAnywhere, Category = "Spawning")
-    TSubclassOf<class AEnemy> EnemyBlueprint;
+    TSubclassOf<AEnemy> EnemyBlueprint;
     
     /**The maximum time before an enemy is spawned*/
     UPROPERTY(EditAnywhere, Category = "Spawning")

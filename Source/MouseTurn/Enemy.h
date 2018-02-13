@@ -5,6 +5,8 @@
 #include "GameFramework/Actor.h"
 #include "Enemy.generated.h"
 
+class UShapeComponent;
+
 UCLASS()
 class MOUSETURN_API AEnemy : public AActor
 {

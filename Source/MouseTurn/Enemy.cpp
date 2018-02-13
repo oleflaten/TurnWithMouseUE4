@@ -1,8 +1,11 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
-#include "MouseTurn.h"
 #include "Enemy.h"
+#include "MouseTurn.h"
 #include "MyPawn.h"
+
+#include "Components/BoxComponent.h"
+#include "Engine/World.h"
 
 
 // Sets default values

@@ -14,6 +14,8 @@ AClip::AClip()
     RootSphere = CreateDefaultSubobject<USphereComponent>(TEXT("ClipSphere"));
     RootSphere->SetSphereRadius(80.f);
     RootComponent = RootSphere;
+    
+    ///This is used in AMyPawn::OnOverlap
     RootSphere->bGenerateOverlapEvents = true;
 }
 

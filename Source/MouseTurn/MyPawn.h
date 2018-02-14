@@ -51,7 +51,7 @@ private:
     
     /**The max movement speed of the pawn*/
     UPROPERTY(EditAnywhere, Category = "Pawn Setup")
-    int Speed = 400;
+    int Speed = 100;
 
     /**How fast is the autoshoot?*/
     UPROPERTY(EditAnywhere, Category = "Pawn Setup")

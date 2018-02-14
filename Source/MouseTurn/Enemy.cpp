@@ -14,9 +14,11 @@ AEnemy::AEnemy()
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
     
+    ///A standard box collider with Overlap Events:
     RootBox = CreateDefaultSubobject<UBoxComponent>(TEXT("MyEnemy"));
     RootComponent = RootBox;
     RootBox->bGenerateOverlapEvents = true;
+    //Visual component added in blueprint
 }
 
 // Called when the game starts or when spawned
@@ -51,6 +53,8 @@ void AEnemy::Tick( float DeltaTime )
 
 void AEnemy::ImHit()
 {
+    ///Must cast a pawn to the correct type to set enemies shot
+    ///Could have used GameMode or something else also to store this
     AMyPawn* TempPawn = Cast<AMyPawn>(GetWorld()->GetFirstPlayerController()->GetPawn());
     TempPawn->EnemiesShot++;
     Destroy();

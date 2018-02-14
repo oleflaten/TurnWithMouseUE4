@@ -13,6 +13,7 @@
 #include "Engine/World.h"
 #include "UObject/ConstructorHelpers.h"
 #include "Kismet/GameplayStatics.h"
+#include "UObject/UObjectGlobals.h"     //Shold not be needed - for CreateDefaultSubobject
 
 // Sets default values
 AMyPawn::AMyPawn()
@@ -21,18 +22,20 @@ AMyPawn::AMyPawn()
     PrimaryActorTick.bCanEverTick = true;
     
     // Set this pawn to be controlled by the lowest-numbered player
-    //Er satt opp i GameMode-blueprint
-    //AutoPossessPlayer = EAutoReceiveInput::Player0;
+    // Set in GameMode-blueprint
+    // AutoPossessPlayer = EAutoReceiveInput::Player0;
     
-    // Create a dummy root component we can attach things to.
+    // Create a dummy root collison component we can attach things to.
     RootComponent = CreateDefaultSubobject<UBoxComponent>(TEXT("RootComponent"));
 
+    ///Set up the visual component - the actual mesh is set in Blueprint
     OurVisibleComponent = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("OurVisibleComponent"));
     OurVisibleComponent->SetupAttachment(RootComponent);
     
     // Create a decal in the world to show the cursor's location
     CursorToWorld = CreateDefaultSubobject<UDecalComponent>("CursorToWorld");
     CursorToWorld->SetupAttachment(RootComponent);
+    //Hardcoded path
     static ConstructorHelpers::FObjectFinder<UMaterial> DecalMaterialAsset(TEXT("Material'/Game/Materials/M_Cursor_Decal.M_Cursor_Decal'"));
     if (DecalMaterialAsset.Succeeded())
     {
@@ -51,8 +54,9 @@ void AMyPawn::BeginPlay()
     GetWorld()->GetFirstPlayerController()->bShowMouseCursor = true;
     
     //Set up collision shape
+    //Finds the root component, so could be set that way
     CollisionBox = this->FindComponentByClass<UBoxComponent>();
-    //CollisionBox->bGenerateOverlapEvents = true;
+    //CollisionBox->bGenerateOverlapEvents = true; //will call my function instead
     
     if (CollisionBox)
     {
@@ -69,7 +73,7 @@ void AMyPawn::Tick( float DeltaTime )
 {
     Super::Tick( DeltaTime );
     
-    ///Auto shoot:
+    ///Auto shoot with small delay between shots
     if (IsShooting)
     {
         NextShot -= DeltaTime;
@@ -96,10 +100,12 @@ void AMyPawn::Tick( float DeltaTime )
     FHitResult Hit;
     bool HitResult = false;
     
+    ///Using "ByChannel" to get only what I want - the World Static Meshes
     HitResult = GetWorld()->GetFirstPlayerController()->GetHitResultUnderCursorByChannel(UEngineTypes::ConvertToTraceType(ECC_WorldStatic), true, Hit);
     
     if (HitResult)
     {
+        ///Updates cursor
         FVector CursorFV = Hit.ImpactNormal;
         FRotator CursorR = CursorFV.Rotation();
         CursorToWorld->SetWorldLocation(Hit.Location);
@@ -108,8 +114,10 @@ void AMyPawn::Tick( float DeltaTime )
         ///Set the new direction of the pawn:
         FVector CursorLocation = Hit.Location;
         UE_LOG(LogTemp, Warning, TEXT("Hit location %s!"), *Hit.Location.ToString());
+        ///Set Z to a little above ground
         FVector TempLocation = FVector(CursorLocation.X, CursorLocation.Y,  30.f);
         
+        ///Pure vector math
         FVector NewDirection =  TempLocation - GetActorLocation();
         NewDirection.Z = 0.f;
         NewDirection.Normalize();
@@ -123,7 +131,7 @@ void AMyPawn::SetupPlayerInputComponent(class UInputComponent* InputComponent)
 {
     Super::SetupPlayerInputComponent(InputComponent);
     
-    // Respond when our "Grow" key is pressed or released.
+    // Respond when our "Shoot" etc. keys are pressed or released.
     InputComponent->BindAction("Shoot", IE_Pressed, this, &AMyPawn::StartShooting);
     InputComponent->BindAction("Shoot", IE_Released, this, &AMyPawn::StopShooting);
     InputComponent->BindAction("Restart", IE_Pressed, this, &AMyPawn::Restart).bExecuteWhenPaused = true;
@@ -136,13 +144,13 @@ void AMyPawn::SetupPlayerInputComponent(class UInputComponent* InputComponent)
 void AMyPawn::Move_XAxis(float AxisValue)
 {
     // Move at 100 units per second forward or backward
-    CurrentVelocity.X = FMath::Clamp(AxisValue, -1.0f, 1.0f) * 100.0f;
+    CurrentVelocity.X = FMath::Clamp(AxisValue, -1.0f, 1.0f) * Speed;
 }
 
 void AMyPawn::Move_YAxis(float AxisValue)
 {
     // Move at 100 units per second right or left
-    CurrentVelocity.Y = FMath::Clamp(AxisValue, -1.0f, 1.0f) * 100.0f;
+    CurrentVelocity.Y = FMath::Clamp(AxisValue, -1.0f, 1.0f) * Speed;
 }
 
 void AMyPawn::Shoot()
@@ -158,11 +166,13 @@ void AMyPawn::Shoot()
 
 void AMyPawn::StartShooting()
 {
+    ///Autoshoot
     IsShooting = true;
 }
 
 void AMyPawn::StopShooting()
 {
+    ///Autoshoot
     IsShooting = false;
 }
 
@@ -188,6 +198,7 @@ void AMyPawn::Restart()
 {
     if (Died)
     {
+        ///Opens level once more
         UGameplayStatics::OpenLevel(this, FName(*GetWorld()->GetName()), false);
     }
 }

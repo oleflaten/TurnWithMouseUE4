@@ -12,6 +12,7 @@ AEnemySpawner::AEnemySpawner()
 {
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
+    ///No collider - only visible mesh
     RootComponent = CreateDefaultSubobject<USceneComponent>(TEXT("RootComponent"));
 }
 
@@ -30,6 +31,7 @@ void AEnemySpawner::Tick( float DeltaTime )
     if (CurrentSpawnDelay < 0)
     {
         GetWorld()->SpawnActor<AEnemy>(EnemyBlueprint, GetActorLocation(), FRotator::ZeroRotator);
+        ///Random time till next spawn
         CurrentSpawnDelay = FMath::FRandRange(MinSpawnDelay, MaxSpawnDelay);
     }
 }

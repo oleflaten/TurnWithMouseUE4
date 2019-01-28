@@ -6,6 +6,7 @@
 
 #include "Components/BoxComponent.h"
 #include "Engine/World.h"
+#include "GameFramework/PlayerController.h"
 
 
 // Sets default values
@@ -17,7 +18,7 @@ AEnemy::AEnemy()
     ///A standard box collider with Overlap Events:
     RootBox = CreateDefaultSubobject<UBoxComponent>(TEXT("MyEnemy"));
     RootComponent = RootBox;
-    RootBox->bGenerateOverlapEvents = true;
+    RootBox->SetGenerateOverlapEvents(true);
     //Visual component added in blueprint
 }
 

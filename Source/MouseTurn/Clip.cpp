@@ -16,7 +16,7 @@ AClip::AClip()
     RootComponent = RootSphere;
     
     ///This is used in AMyPawn::OnOverlap
-    RootSphere->bGenerateOverlapEvents = true;
+    RootSphere->SetGenerateOverlapEvents(true);
 }
 
 // Called when the game starts or when spawned

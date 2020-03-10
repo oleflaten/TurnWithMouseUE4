@@ -54,18 +54,10 @@ void AMyPawn::BeginPlay()
     GetWorld()->GetFirstPlayerController()->bShowMouseCursor = true;
     
     //Set up collision shape
-    //Finds the root component, so could be set that way
-    CollisionBox = this->FindComponentByClass<UBoxComponent>();
-    //CollisionBox->bGenerateOverlapEvents = true; //will call my function instead
+    CollisionBox = Cast<UShapeComponent>(RootComponent);
+    CollisionBox->SetGenerateOverlapEvents(true); //will call my function instead
     
-    if (CollisionBox)
-    {
-        CollisionBox->OnComponentBeginOverlap.AddDynamic(this, &AMyPawn::OnOverlap);
-    }
-    else
-    {
-        UE_LOG(LogTemp, Warning, TEXT("CollisionBox not found!"));
-    }
+    CollisionBox->OnComponentBeginOverlap.AddDynamic(this, &AMyPawn::OnOverlap);
 }
 
 // Called every frame
@@ -94,8 +86,7 @@ void AMyPawn::Tick( float DeltaTime )
         FVector NewLocation = GetActorLocation() + GetActorForwardVector()*(Speed * DeltaTime);
         SetActorLocation(NewLocation);
     }
-    
-    
+      
     /// Move the cursor
     FHitResult Hit;
     bool HitResult = false;
@@ -123,7 +114,6 @@ void AMyPawn::Tick( float DeltaTime )
         NewDirection.Normalize();
         SetActorRotation(NewDirection.Rotation());
     }
-    
 }
 
 // Called to bind functionality to input

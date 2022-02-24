@@ -1,4 +1,4 @@
-// Fill out your copyright notice in the Description page of Project Settings.
+// OEF
 
 #include "Enemy.h"
 #include "MouseTurn.h"
@@ -7,7 +7,6 @@
 #include "Components/BoxComponent.h"
 #include "Engine/World.h"
 #include "GameFramework/PlayerController.h"
-
 
 // Sets default values
 AEnemy::AEnemy()

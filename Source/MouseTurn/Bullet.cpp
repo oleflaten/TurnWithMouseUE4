@@ -1,10 +1,9 @@
-// Fill out your copyright notice in the Description page of Project Settings.
+// OEF
 
 #include "Bullet.h"
 #include "MouseTurn.h"
 #include "Enemy.h"
 #include "Components/SphereComponent.h"
-
 
 // Sets default values
 ABullet::ABullet()

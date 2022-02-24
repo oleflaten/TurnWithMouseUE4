@@ -1,11 +1,11 @@
-// Fill out your copyright notice in the Description page of Project Settings.
+// OEF
 
 #pragma once
 
 #include "GameFramework/Actor.h"
 #include "Bullet.generated.h"
 
-class UShapeComponent;
+class UShapeComponent;  //forward declaration
 
 UCLASS()
 class MOUSETURN_API ABullet : public AActor
@@ -36,12 +36,9 @@ private:
     UPROPERTY(EditAnywhere)
     UShapeComponent* RootSphere = nullptr;
 
-    
     UFUNCTION()
     void OnOverlap(UPrimitiveComponent* OverlappedComponent, AActor *OtherActor,
                    UPrimitiveComponent *OtherComponent, int32 OtherBodyIndex,
                    bool bFromSweep, const FHitResult &SweepResult);
-
-	
 	
 };

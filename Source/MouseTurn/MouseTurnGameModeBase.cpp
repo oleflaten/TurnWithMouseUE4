@@ -1,9 +1,4 @@
-// Fill out your copyright notice in the Description page of Project Settings.
+// OEF
 
 #include "MouseTurnGameModeBase.h"
 #include "MouseTurn.h"
-
-
-
-
-

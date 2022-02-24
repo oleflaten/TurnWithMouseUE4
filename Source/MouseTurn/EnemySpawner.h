@@ -1,4 +1,4 @@
-// Fill out your copyright notice in the Description page of Project Settings.
+// OEF
 
 #pragma once
 
@@ -36,5 +36,4 @@ public:
     
     //How long to next spawn
     float CurrentSpawnDelay = 0.f;
-    
 };

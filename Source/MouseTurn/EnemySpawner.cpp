@@ -1,4 +1,4 @@
-// Fill out your copyright notice in the Description page of Project Settings.
+// OEF
 
 #include "EnemySpawner.h"
 #include "MouseTurn.h"
@@ -35,4 +35,3 @@ void AEnemySpawner::Tick( float DeltaTime )
         CurrentSpawnDelay = FMath::FRandRange(MinSpawnDelay, MaxSpawnDelay);
     }
 }
-

@@ -36,4 +36,7 @@ public:
     
     //How long to next spawn
     float CurrentSpawnDelay{0.f};
+
+    UPROPERTY(VisibleAnywhere, Category = "Spawner")
+        class UStaticMeshComponent* OurVisibleComponent{ nullptr };
 };

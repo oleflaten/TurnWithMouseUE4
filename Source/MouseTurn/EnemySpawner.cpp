@@ -3,8 +3,8 @@
 #include "EnemySpawner.h"
 #include "MouseTurn.h"
 #include "Enemy.h"
-
-#include "Components/SphereComponent.h"
+#include "Components/SceneComponent.h"
+#include "Components/StaticMeshComponent.h"
 #include "Engine/World.h"
 
 // Sets default values
@@ -14,6 +14,10 @@ AEnemySpawner::AEnemySpawner()
 	PrimaryActorTick.bCanEverTick = true;
     ///No collider - only visible mesh
     RootComponent = CreateDefaultSubobject<USceneComponent>(TEXT("RootComponent"));
+
+    ///Set up the visual component - the actual mesh is set in Blueprint
+    OurVisibleComponent = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("SpawnerMesh"));
+    OurVisibleComponent->SetupAttachment(RootComponent);
 }
 
 // Called when the game starts or when spawned

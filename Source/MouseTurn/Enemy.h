@@ -31,19 +31,19 @@ private:
     
     /**The speed of the enemy*/
     UPROPERTY(EditAnywhere)
-    float Speed = 150.f;
+        float Speed{150.f};
     
     /**How long max till turn towards player*/
     UPROPERTY(EditAnywhere)
-    float TurnDelayMax = 5.f;
+        float TurnDelayMax{5.f};
 
     /**How long min till turn towards player*/
     UPROPERTY(EditAnywhere)
-    float TurnDelayMin = 1.f;
+        float TurnDelayMin{1.f};
     
-    float CurrentTurnDelay = 0.f;
+    float CurrentTurnDelay{0.f};
     
     /**The collider component of the enemy*/
     UPROPERTY(EditAnywhere)
-    UShapeComponent* RootBox = nullptr;
+        UShapeComponent* RootBox{nullptr};
 };

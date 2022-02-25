@@ -15,7 +15,7 @@ AEnemy::AEnemy()
 	PrimaryActorTick.bCanEverTick = true;
     
     ///A standard box collider with Overlap Events:
-    RootBox = CreateDefaultSubobject<UBoxComponent>(TEXT("MyEnemy"));
+    RootBox = CreateDefaultSubobject<UBoxComponent>(TEXT("MyEnemyCollider"));
     RootComponent = RootBox;
     RootBox->SetGenerateOverlapEvents(true);
     //Visual component added in blueprint

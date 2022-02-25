@@ -15,6 +15,9 @@
 #include "Kismet/GameplayStatics.h"
 #include "UObject/UObjectGlobals.h"     //Shold not be needed - for CreateDefaultSubobject
 
+#include "Camera/CameraComponent.h"
+#include "GameFramework/SpringArmComponent.h"
+
 // Sets default values
 AMyPawn::AMyPawn()
 {
@@ -26,11 +29,30 @@ AMyPawn::AMyPawn()
     // AutoPossessPlayer = EAutoReceiveInput::Player0;
     
     // Create a dummy root collison component we can attach things to.
-    RootComponent = CreateDefaultSubobject<UBoxComponent>(TEXT("RootComponent"));
+        //Set up collision shape
+    CollisionBox = CreateDefaultSubobject<UBoxComponent>(TEXT("BoxCollider"));
+    CollisionBox->SetGenerateOverlapEvents(true);
+    CollisionBox->OnComponentBeginOverlap.AddDynamic(this, &AMyPawn::OnOverlap);
+    RootComponent = CollisionBox;
 
     ///Set up the visual component - the actual mesh is set in Blueprint
     OurVisibleComponent = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("OurVisibleComponent"));
     OurVisibleComponent->SetupAttachment(RootComponent);
+
+    // Create a camera boom 
+    CameraBoom = CreateDefaultSubobject<USpringArmComponent>(TEXT("CameraBoom"));
+    CameraBoom->SetupAttachment(RootComponent);
+    CameraBoom->TargetArmLength = 1000.f;
+    CameraBoom->bEnableCameraLag = true;
+    CameraBoom->CameraLagSpeed = 40.f;
+    CameraBoom->SetRelativeRotation(FRotator(-35.f, 0.f, 0.f));
+    CameraBoom->bUsePawnControlRotation = false;	// Ignore controller rotations
+    CameraBoom->bInheritYaw = false;				// Ignore Yaw rotations
+    CameraBoom->bDoCollisionTest = false;			// Should not zoom closer to player if colliding
+
+    // Create a follow camera
+    FollowCamera = CreateDefaultSubobject<UCameraComponent>(TEXT("FollowCamera"));
+    FollowCamera->SetupAttachment(CameraBoom, USpringArmComponent::SocketName);
     
     // Create a decal in the world to show the cursor's location
     CursorToWorld = CreateDefaultSubobject<UDecalComponent>("CursorToWorld");
@@ -52,12 +74,6 @@ void AMyPawn::BeginPlay()
 
     //Show system cursor. Should probably be false
     GetWorld()->GetFirstPlayerController()->bShowMouseCursor = true;
-    
-    //Set up collision shape
-    CollisionBox = Cast<UShapeComponent>(RootComponent);
-    CollisionBox->SetGenerateOverlapEvents(true); //will call my function instead
-    
-    CollisionBox->OnComponentBeginOverlap.AddDynamic(this, &AMyPawn::OnOverlap);
 }
 
 // Called every frame
@@ -104,7 +120,7 @@ void AMyPawn::Tick( float DeltaTime )
 
         ///Set the new direction of the pawn:
         FVector CursorLocation = Hit.Location;
-        UE_LOG(LogTemp, Warning, TEXT("Hit location %s!"), *Hit.Location.ToString());
+        //UE_LOG(LogTemp, Warning, TEXT("Hit location %s!"), *Hit.Location.ToString());
         ///Set Z to a little above ground
         FVector TempLocation = FVector(CursorLocation.X, CursorLocation.Y,  30.f);
         
@@ -148,8 +164,8 @@ void AMyPawn::Shoot()
     ///Spawn one bullet if we have ammo
     if (Ammo >0)
     {
-        GetWorld()->SpawnActor<ABullet>(BulletBlueprint, GetActorLocation() + GetActorForwardVector() * 100.f,
-                                        GetActorRotation());
+        GetWorld()->SpawnActor<ABullet>(BulletBlueprint, GetActorLocation() + 
+            GetActorForwardVector() * 100.f, GetActorRotation());
         Ammo--;
     }
 }

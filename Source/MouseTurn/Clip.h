@@ -24,6 +24,6 @@ public:
 
     /**The collision shape of the clip*/
     UPROPERTY(EditAnywhere)
-    USphereComponent* RootSphere = nullptr;
+	    USphereComponent* RootSphere{nullptr};
 	
 };

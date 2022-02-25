@@ -4,6 +4,7 @@
 #include "MouseTurn.h"
 #include "Enemy.h"
 #include "Components/SphereComponent.h"
+#include "Components/StaticMeshComponent.h"
 
 // Sets default values
 ABullet::ABullet()
@@ -12,10 +13,14 @@ ABullet::ABullet()
     PrimaryActorTick.bCanEverTick = true;
     
     //Collision object and RootObject
-    RootSphere = CreateDefaultSubobject<USphereComponent>(TEXT("MySphere"));
+    RootSphere = CreateDefaultSubobject<USphereComponent>(TEXT("BulletCollider"));
     RootComponent = RootSphere;
     RootSphere->SetGenerateOverlapEvents(true);
     RootSphere->OnComponentBeginOverlap.AddDynamic(this, &ABullet::OnOverlap);
+
+    ///Set up the visual component - the actual mesh is set in Blueprint
+    OurVisibleComponent = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("BulletMesh"));
+    OurVisibleComponent->SetupAttachment(RootComponent);
 }
 
 // Called when the game starts or when spawned
@@ -44,7 +49,7 @@ void ABullet::OnOverlap(UPrimitiveComponent* OverlappedComponent, AActor *OtherA
                         UPrimitiveComponent *OtherComponent, int32 OtherBodyIndex,
                         bool bFromSweep, const FHitResult &SweepResult)
 {
-    //UE_LOG(LogTemp, Warning, TEXT("Bullet Overlap %s"), *OtherActor->GetName())
+    UE_LOG(LogTemp, Warning, TEXT("Bullet Overlap %s"), *OtherActor->GetName())
     if(OtherActor->IsA(AEnemy::StaticClass()))
     {
         Cast<AEnemy>(OtherActor)->ImHit(); //Alternativt bare OtherActor->Destroy();

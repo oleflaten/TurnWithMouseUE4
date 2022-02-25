@@ -26,12 +26,12 @@ public:
     
     /**The maximum time before a clip is spawned*/
     UPROPERTY(EditAnywhere, Category = "Spawning")
-    float MaxSpawnDelay = 10.f;
+        float MaxSpawnDelay{10.f};
     
     /**The minimum time before a clip is spawned*/
     UPROPERTY(EditAnywhere, Category = "Spawning")
-    float MinSpawnDelay = 5.f;
+        float MinSpawnDelay{5.f};
     
     //How long to next spawn
-    float CurrentSpawnDelay = 0.f;
+    float CurrentSpawnDelay{0.f};
 };

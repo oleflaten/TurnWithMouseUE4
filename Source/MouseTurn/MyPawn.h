@@ -5,6 +5,7 @@
 #include "GameFramework/Pawn.h"
 #include "MyPawn.generated.h"
 
+//forward declaration
 class UDecalComponent;
 class UShapeComponent;
 class USceneComponent;
@@ -39,56 +40,62 @@ public:
     
     /**How much ammo does the pawn have now*/
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Pawn Setup")
-    int Ammo = 20;
+        int Ammo{20};
     
     /**How many enemies have the pawn shot*/
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Pawn Setup")
-    int EnemiesShot = 0;
+        int EnemiesShot{0};
     
 private:
     UPROPERTY(EditAnywhere, Category = "Pawn Setup")
-    USceneComponent* OurVisibleComponent;
+        USceneComponent* OurVisibleComponent {nullptr};
     
     /**The max movement speed of the pawn*/
     UPROPERTY(EditAnywhere, Category = "Pawn Setup")
-    int Speed = 100;
+        int Speed{300};
 
     /**How fast is the autoshoot?*/
     UPROPERTY(EditAnywhere, Category = "Pawn Setup")
-    float ShootSpeed = 0.3f;
+        float ShootSpeed{0.3f};
     
     /**The speed of pawn rotation*/
     UPROPERTY(EditAnywhere, Category = "Pawn Setup")
-    float YawSpeed = 0.3f;
+        float YawSpeed{0.3f};
     
     /**The bullet the pawn shoots*/
     UPROPERTY(EditAnywhere, Category = "Pawn Setup")
-    TSubclassOf<ABullet> BulletBlueprint;
+        TSubclassOf<ABullet> BulletBlueprint;
     
     /**How much ammo does the pawn get from clips*/
     UPROPERTY(EditAnywhere, Category = "Pawn Setup")
-    int AmmoInClip = 20;
+        int AmmoInClip{20};
     
     /** A decal that projects to the cursor location. */
     UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Pawn Setup", meta = (AllowPrivateAccess = "true"))
-    UDecalComponent* CursorToWorld;
+        UDecalComponent* CursorToWorld{nullptr};
+
+    // Camera boom positioning the camera behind the character
+    UPROPERTY(VisibleAnywhere, Category = "Camera")
+        class USpringArmComponent* CameraBoom{nullptr};
+
+    // Camera
+    UPROPERTY(VisibleAnywhere, Category = "Camera")
+        class UCameraComponent* FollowCamera{nullptr};
     
     UFUNCTION()
-    void OnOverlap(UPrimitiveComponent* OverlappedComponent, AActor *OtherActor, UPrimitiveComponent *OtherComponent, int32 OtherBodyIndex, bool bFromSweep, const FHitResult &SweepResult);
+    void OnOverlap(UPrimitiveComponent* OverlappedComponent, AActor *OtherActor, 
+        UPrimitiveComponent *OtherComponent, int32 OtherBodyIndex, bool bFromSweep, 
+        const FHitResult &SweepResult);
  
     /**Holds whether the pawn is dead or not*/
-    bool Died = false;
+    bool Died{false};
     /** The velocity of the pawn*/
     FVector CurrentVelocity;
     /**Is the pawn shooting*/
-    bool IsShooting;
+    bool IsShooting{false};
     /**Collision shape*/
-    UShapeComponent* CollisionBox = nullptr;
+    UPROPERTY(VisibleAnywhere)
+        UShapeComponent* CollisionBox{nullptr};
     /** How long time to next shot*/
-    float NextShot = -0.1f;
- 
-
-    
-    
-    
+    float NextShot{-0.1f};
 };

@@ -5,8 +5,6 @@
 #include "GameFramework/Actor.h"
 #include "Bullet.generated.h"
 
-class UShapeComponent;  //forward declaration
-
 UCLASS()
 class MOUSETURN_API ABullet : public AActor
 {
@@ -21,24 +19,27 @@ public:
 	
 	// Called every frame
 	virtual void Tick( float DeltaSeconds ) override;
+
+    /**The collision shape of the bullet*/
+    UPROPERTY(EditAnywhere, Category = "Bullet")
+        class USphereComponent* RootSphere{nullptr};
+
+    UPROPERTY(VisibleAnywhere, Category = "Bullet")
+        class UStaticMeshComponent* OurVisibleComponent { nullptr };
+
 private:
     /**Speed of bullet*/
-    UPROPERTY(EditAnywhere)
-    float Speed = 400.f;
+    UPROPERTY(EditAnywhere, Category = "Bullet")
+        float Speed{400.f};
     
     /**Time before bullet selfdestruct*/
-    UPROPERTY(EditAnywhere)
-    float TimeBeforeDestroy = 5.f;
+    UPROPERTY(EditAnywhere, Category = "Bullet")
+        float TimeBeforeDestroy{5.f};
     
     float TimeLived{0};
     
-    /**The collision shape of the bullet*/
-    UPROPERTY(EditAnywhere)
-    UShapeComponent* RootSphere = nullptr;
-
     UFUNCTION()
     void OnOverlap(UPrimitiveComponent* OverlappedComponent, AActor *OtherActor,
                    UPrimitiveComponent *OtherComponent, int32 OtherBodyIndex,
                    bool bFromSweep, const FHitResult &SweepResult);
-	
 };

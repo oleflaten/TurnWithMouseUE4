@@ -28,12 +28,12 @@ public:
     
     /**The maximum time before an enemy is spawned*/
     UPROPERTY(EditAnywhere, Category = "Spawning")
-    float MaxSpawnDelay = 3.f;
+        float MaxSpawnDelay{3.f};
     
     /**The minimum time before an enemy is spawned*/
     UPROPERTY(EditAnywhere, Category = "Spawning")
-    float MinSpawnDelay = 1.f;
+        float MinSpawnDelay{1.f};
     
     //How long to next spawn
-    float CurrentSpawnDelay = 0.f;
+    float CurrentSpawnDelay{0.f};
 };

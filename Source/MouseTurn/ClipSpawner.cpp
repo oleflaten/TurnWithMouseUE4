@@ -31,4 +31,3 @@ void AClipSpawner::Tick( float DeltaTime )
         CurrentSpawnDelay = FMath::FRandRange(MinSpawnDelay, MaxSpawnDelay);
     }
 }
-
